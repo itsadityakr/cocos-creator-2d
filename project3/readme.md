@@ -4,6 +4,8 @@
 
 ---
 
+![project preview](thumbnail.gif)
+
 ## Overview
 
 This project creates a rotating object (node) that moves in a circular path around a central button (node). The rotation can be toggled on or off, and the speed of rotation can be adjusted using two buttons: one to increase the speed and one to decrease it. The movement follows a simple mathematical model, using trigonometric functions to calculate the position of the rotating object.

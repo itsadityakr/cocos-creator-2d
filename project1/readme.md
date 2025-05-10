@@ -4,6 +4,8 @@
 
 ---
 
+![project preview](thumbnail.gif)
+
 ## Overview
 
 This project is made using **Cocos Creator with TypeScript**. It demonstrates how to dynamically **spawn a prefab** each time a button is clicked, and how to update the text inside that prefab using a **counter**.

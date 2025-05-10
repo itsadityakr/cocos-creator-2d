@@ -6,6 +6,10 @@ This script allows users to drag a sprite within a scene, and once released, it 
 
 ---
 
+![project preview](thumbnail.gif)
+
+---
+
 ## What This Project Does
 
 * **Draggable Sprite:** The user can drag a sprite around the screen.

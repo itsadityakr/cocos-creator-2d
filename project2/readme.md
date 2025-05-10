@@ -4,6 +4,8 @@
 
 ---
 
+![project preview](thumbnail.gif)
+
 ## Overview
 
 This Cocos Creator project demonstrates how to spawn prefabs randomly within a defined spawn area and how to remove all spawned prefabs when needed. The project includes two buttons: one to spawn the prefabs and another to remove all prefabs from the scene.

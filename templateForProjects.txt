@@ -1,0 +1,35 @@
+# Project Name (Create Automatically)
+
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+
+---
+
+## Overview
+
+---
+
+## What This Project Does
+
+---
+
+## Code Explaination (explain Each Word in depth and Esy way)
+
+---
+
+## What We Learned
+
+1. **How to use the `@property` decorator** to expose script variables in the Cocos Editor.
+
+---
+
+## Glossary of Key Terms
+
+| Term / Symbol            | Meaning                                                        |
+| ------------------------ | -------------------------------------------------------------- |
+| `@property`              | A decorator to expose class variables in the Cocos Editor      |
+| `@ccclass`               | Marks the class as a usable Cocos component                    |
+| `cc.Node`                | A generic scene node; can represent UI, 2D, 3D, etc.           |
+
+---
+
+![Static Badge](https://img.shields.io/badge/Aditya%20Kumar-black?style=for-the-badge&logo=atlasos&logoColor=%23ffffff)

@@ -6,10 +6,13 @@ This repository contains beginner-friendly projects designed to help you get sta
 
 ## Table of Contents
 
-- [Spawning Prefabs in a Grid and Setting Label using Counter](#spawning-prefabs-in-a-grid-and-setting-label-using-counter)
-- [Spawn Prefabs Randomly within an Area and Remove All Prefabs](#spawn-prefabs-randomly-within-an-area-and-remove-all-prefabs)
-- [Rotating Object around a Central Node and Button to Increase/Decrease Speed](#rotating-object-around-a-central-node-and-button-to-increase-decrease-speed)
-- [Drag-and-Drop with Reset Feature](#drag-and-drop-with-reset-feature)
+- [Spawning Prefabs in a Grid and Setting Label using Counter](#spawning-prefabs-in-a-grid-and-setting-label-using-counter) <img src="./project1/thumbnail.gif" alt="project preview" width="200">
+
+- [Spawn Prefabs Randomly within an Area and Remove All Prefabs](#spawn-prefabs-randomly-within-an-area-and-remove-all-prefabs) <img src="./project2/thumbnail.gif" alt="project preview" width="200">
+
+- [Rotating Object around a Central Node and Button to Increase/Decrease Speed](#rotating-object-around-a-central-node-and-button-to-increase-decrease-speed) <img src="./project3/thumbnail.gif" alt="project preview" width="200">
+
+- [Drag-and-Drop with Reset Feature](#drag-and-drop-with-reset-feature) <img src="./project4/thumbnail.gif" alt="project preview" width="200">
 
 ---
 
