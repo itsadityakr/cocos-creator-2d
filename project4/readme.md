@@ -1,173 +1,207 @@
-### Complete Code:
+# Drag-and-Drop with Reset Feature
 
-```typescript
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+
+This script allows users to drag a sprite within a scene, and once released, it checks if the sprite is inside a designated drop zone. If the sprite is inside the drop zone, it aligns the sprite to the center of the drop zone. Additionally, if the mouse pointer leaves the canvas, the sprite is reset to its default position.
+
+---
+
+## What This Project Does
+
+* **Draggable Sprite:** The user can drag a sprite around the screen.
+* **Target Area:** There is a drop zone, and if the sprite is dropped inside, it aligns to the center of the zone.
+* **Reset Mechanism:** If the mouse leaves the canvas, the sprite resets back to its initial position.
+
+---
+
+## Code Explanation
+
+```ts
+const { ccclass, property } = cc._decorator;
+```
+
+* `ccclass`: Decorator used to define this class as a component that can be attached to a Cocos Creator node.
+* `property`: Decorator used to expose class variables to the Cocos Creator editor so they can be assigned easily in the Inspector panel.
+
+---
+
+```ts
 @ccclass
-export default class NewClass extends cc.Component {
+export default class dragNResetLogic extends cc.Component {
+```
 
-    @property(cc.Node)
-    panel: cc.Node = null;  // The parent Node where the boxes will be placed.
+* `@ccclass`: Marks the class as a component in Cocos Creator.
+* `dragNResetLogic`: The name of the class that handles the drag-and-drop logic.
+* `extends cc.Component`: The class extends `cc.Component`, making it a Cocos Creator component.
 
-    @property(cc.Prefab)
-    boxSprite: cc.Prefab = null;  // Prefab of the box that will be instantiated on button click.
+---
 
-    counter: number = 0;  // Variable that holds the click count.
+### Defining Properties
 
-    // The function triggered when the button is clicked.
-    onClick() {
-        // Step 1: Instantiate a new box from the prefab
-        let a = cc.instantiate(this.boxSprite);  // Creates a new instance of the boxPrefab.
+```ts
+@property(cc.Node)
+draggableSpriteSplash: cc.Node = null; // The sprite node that will be draggable
+```
 
-        // Step 2: Set the parent of the new box to the panel
-        a.parent = this.panel;  // Adds the instantiated box as a child to the panel node.
+* `draggableSpriteSplash`: A property to reference the sprite that will be dragged.
+* `cc.Node`: Indicates this variable will hold a node (e.g., a sprite or button).
+* `= null`: Initializes the property as null until it's assigned in the editor.
 
-        // Step 3: Access the label inside the box
-        let label = a.children[0];  // Assuming the first child of the box is the label.
+```ts
+@property(cc.Node)
+boxSpriteSplash: cc.Node = null; // The target drop zone where the sprite can align to center
+```
 
-        // Step 4: Update the label's text with the current counter value
-        label.getComponent(cc.Label).string = "" + this.counter++;  // Sets the label's text to the counter and increments it.
+* `boxSpriteSplash`: A property to reference the drop zone where the sprite can be aligned when dropped.
+
+```ts
+private isDragging: boolean = false; // Flag to track whether the node is being dragged
+private defaultPosition: cc.Vec3 = null; // Stores the original/default position of the draggable node
+```
+
+* `isDragging`: A boolean flag used to determine whether the sprite is being dragged.
+* `defaultPosition`: Stores the initial position of the draggable sprite so it can be reset if necessary.
+
+---
+
+### Lifecycle Method
+
+```ts
+onLoad() {
+    this.defaultPosition = this.draggableSpriteSplash.position;
+    this.draggableSpriteSplash.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
+    this.draggableSpriteSplash.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
+    this.draggableSpriteSplash.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
+    this.draggableSpriteSplash.on(cc.Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
+    cc.game.canvas.addEventListener("mouseleave", this.onMouseLeave.bind(this));
+}
+```
+
+* `onLoad()`: This method is called when the component is loaded.
+* `this.draggableSpriteSplash.position`: Stores the initial position of the sprite.
+* `.on(cc.Node.EventType.TOUCH_START, ...)`: Registers a listener for when a touch starts, enabling the drag.
+* `.on(cc.Node.EventType.TOUCH_MOVE, ...)`: Registers a listener for continuous touch movement, updating the sprite’s position.
+* `.on(cc.Node.EventType.TOUCH_END, ...)`: Registers a listener for when the touch ends, deciding whether to align the sprite to the drop zone.
+* `cc.game.canvas.addEventListener("mouseleave", ...)`: Registers a listener for when the mouse leaves the canvas, triggering the reset.
+
+---
+
+### Dragging Functions
+
+```ts
+onTouchStart(event: cc.Event.EventTouch) {
+    this.isDragging = true;
+}
+```
+
+* `onTouchStart()`: Activates the dragging mode when the touch begins (e.g., finger or mouse click).
+
+```ts
+onTouchMove(event: cc.Event.EventTouch) {
+    if (this.isDragging) {
+        let delta = event.getDelta();
+        let deltaVec3 = new cc.Vec3(delta.x, delta.y, 0);
+        let newPos = this.draggableSpriteSplash.position.add(deltaVec3);
+        this.draggableSpriteSplash.setPosition(newPos);
     }
 }
 ```
 
----
+* `onTouchMove()`: Updates the sprite’s position based on the touch movement.
+* `event.getDelta()`: Retrieves the change in touch position.
+* `this.draggableSpriteSplash.setPosition(newPos)`: Sets the new position of the sprite.
 
-### 1. **Class Definition with `@ccclass` Decorator**
-
-```typescript
-@ccclass
-export default class NewClass extends cc.Component {
-```
-
-* **`@ccclass`**:
-
-  * This decorator marks the class as a **Cocos Creator Component**. In Cocos Creator, you define custom behaviors using components, which are attached to **Nodes** in the scene.
-  * **Why it’s important**: This is how Cocos Creator knows that this class should be treated as a script to attach to a node.
-
-* **`export default class NewClass extends cc.Component`**:
-
-  * **`NewClass`** is the name of the component (you can rename it).
-  * **`extends cc.Component`** means that this class inherits from `cc.Component`, which is a built-in class in Cocos Creator. Every custom behavior in Cocos Creator is written by extending `cc.Component`.
-  * By extending `cc.Component`, `NewClass` gets access to life-cycle methods (like `start`, `update`), and properties (like `this.node`) that control the behavior of the attached node.
-
----
-
-### 2. **Properties with `@property` Decorator**
-
-```typescript
-@property(cc.Node)
-panel: cc.Node = null;  // The parent Node where the boxes will be placed.
-
-@property(cc.Prefab)
-boxSprite: cc.Prefab = null;  // Prefab of the box that will be instantiated on button click.
-```
-
-* **`@property(cc.Node)`**:
-
-  * This decorator exposes a variable as a property that can be set in the **Cocos Creator Editor**.
-  * **`panel`** is the variable name, and its type is `cc.Node`, meaning it expects a **Node**. It represents the panel or container where the dynamically created boxes will be added.
-  * When you add this script to a **Node** in the Cocos Creator editor, **`panel`** will show up as an editable field in the Inspector. You can assign any other node (like a UI grid or container) to be the parent of the instantiated boxes.
-
-* **`@property(cc.Prefab)`**:
-
-  * This decorator allows you to assign a **Prefab** (a reusable object template) in the Cocos Creator Editor.
-  * **`boxSprite`** is the variable name, and its type is `cc.Prefab`, which expects a **Prefab** asset that you can assign in the editor.
-  * A **Prefab** in Cocos Creator is a reusable template that can be instantiated multiple times during runtime. For example, you create a box template (with a label) as a Prefab, and each time you click the button, a new box is instantiated from this template.
-
----
-
-### 3. **Counter Variable**
-
-```typescript
-counter: number = 0;  // Variable that holds the click count.
-```
-
-* **`counter`** is a simple variable that keeps track of the number of times the button has been clicked.
-* It starts at **0**, and each time the button is clicked, the counter is incremented using `this.counter++`.
-* This variable is important because it will display the current count in the label inside each generated box.
-
----
-
-### 4. **`onClick` Method (Triggered by Button Click)**
-
-```typescript
-onClick() {
-    // Step 1: Instantiate a new box from the prefab
-    let a = cc.instantiate(this.boxSprite);  // Creates a new instance of the boxPrefab.
-
-    // Step 2: Set the parent of the new box to the panel
-    a.parent = this.panel;  // Adds the instantiated box as a child to the panel node.
-
-    // Step 3: Access the label inside the box
-    let label = a.children[0];  // Assuming the first child of the box is the label.
-
-    // Step 4: Update the label's text with the current counter value
-    label.getComponent(cc.Label).string = "" + this.counter++;  // Sets the label's text to the counter and increments it.
+```ts
+onTouchEnd(event: cc.Event.EventTouch) {
+    this.isDragging = false;
+    if (this.isInsideDropZone()) {
+        this.alignToCenter();
+    }
 }
 ```
 
-#### Step 1: **Instantiating the Prefab**
-
-```typescript
-let a = cc.instantiate(this.boxSprite);
-```
-
-* **`cc.instantiate(this.boxSprite)`**: This creates a new **instance** of the `boxSprite` prefab.
-
-  * Prefabs in Cocos Creator are reusable templates. When you instantiate a prefab, a **new copy** is created that you can manipulate (position, scale, add components, etc.).
-  * This is crucial because you are creating a new box each time the button is clicked, instead of reusing the same one.
-
-#### Step 2: **Setting the Parent Node**
-
-```typescript
-a.parent = this.panel;
-```
-
-* **`a.parent = this.panel`**: This sets the newly created box (`a`) as a **child** of the `panel` node.
-
-  * The `panel` is the container node (probably a grid or layout panel) that will hold all the instantiated boxes.
-  * In Cocos Creator, when you set a parent node for a new object, it becomes a child of that node in the scene graph. This determines where it will be positioned (relative to its parent).
-
-#### Step 3: **Accessing the Label Inside the Box**
-
-```typescript
-let label = a.children[0];
-```
-
-* **`a.children[0]`**: When you instantiate a prefab, the prefab’s components (like sprites, labels, etc.) are added as children to the new instance.
-
-  * **`children[0]`** assumes that the first child of the box is the label.
-  * The **`children[0]`** could be any other component depending on how the prefab is structured. Here, it’s assumed that the **first child** is a label node that will display the counter value.
-
-#### Step 4: **Updating the Label**
-
-```typescript
-label.getComponent(cc.Label).string = "" + this.counter++;
-```
-
-* **`label.getComponent(cc.Label)`**: This accesses the **Label** component attached to the `label` node. The `Label` component is responsible for displaying text on a **Node** in Cocos Creator.
-* **`.string = "" + this.counter++`**: This sets the **text** of the label to the current value of `counter`.
-
-  * The `"" + this.counter++` converts the `counter` value to a string and assigns it to the `string` property of the label.
-  * The **`++`** increments the `counter` after setting the value. This ensures that the next label shows the next number.
+* `onTouchEnd()`: Deactivates dragging when the touch ends.
+* `this.isInsideDropZone()`: Checks if the sprite is within the drop zone.
+* `this.alignToCenter()`: Aligns the sprite to the center of the drop zone if it’s inside.
 
 ---
 
-### **Summary of Behavior:**
+### Helper Functions
 
-* **Button Click**: Every time the button is clicked, a new box is created (instantiated) in the grid (`panel`).
-* **Label Update**: Each box shows the current value of the `counter` variable. The counter starts at 0 and increments each time the button is clicked (0, 1, 2, 3, etc.).
-* **Grid Layout**: Boxes are added as children to the `panel`, and they can be displayed in a grid format depending on how the `panel` node is configured in Cocos Creator.
+```ts
+alignToCenter() {
+    let boxCenter = this.boxSpriteSplash.position;
+    this.draggableSpriteSplash.setPosition(boxCenter);
+}
+```
 
-### **How It Works in Cocos Creator**:
+* `alignToCenter()`: Moves the draggable sprite to the center of the drop zone.
 
-1. You create a **Prefab** for the box, which contains a **Label** to show the number.
-2. The button’s **click event** is connected to the `onClick` method.
-3. When the button is clicked:
+```ts
+isInsideDropZone(): boolean {
+    let draggablePos = this.draggableSpriteSplash.getBoundingBoxToWorld();
+    let dropZonePos = this.boxSpriteSplash.getBoundingBoxToWorld();
+    return dropZonePos.intersects(draggablePos);
+}
+```
 
-   * A new instance of the **boxPrefab** is created.
-   * It’s added as a child to the **panel node**.
-   * The **Label component** of the box is updated with the current click count.
-4. This process repeats, creating a dynamic grid of boxes where each box shows an incrementing number.
+* `isInsideDropZone()`: Checks if the draggable sprite’s bounding box intersects with the drop zone’s bounding box. Returns `true` if they overlap.
+
+```ts
+resetPosition() {
+    this.draggableSpriteSplash.setPosition(this.defaultPosition);
+}
+```
+
+* `resetPosition()`: Resets the draggable sprite to its initial position.
+
+```ts
+onMouseLeave() {
+    this.resetPosition();
+}
+```
+
+* `onMouseLeave()`: If the mouse leaves the canvas, the sprite is reset to its default position.
 
 ---
+
+## Key Features
+
+1. **Drag and Drop**: Enables dragging and dropping of the sprite to a specific target zone.
+2. **Reset Mechanism**: Resets the position of the sprite if the mouse leaves the game area.
+3. **Target Zone Detection**: Ensures the sprite only aligns to the drop zone when within its boundaries.
+
+---
+
+## What We Learned
+
+1. **How to implement drag-and-drop functionality in Cocos Creator.**
+2. **How to use touch event listeners to track user input.**
+3. **How to detect if a sprite is inside a target zone and align it accordingly.**
+4. **How to reset a sprite’s position when the mouse leaves the canvas.**
+
+---
+
+## Glossary of Key Terms
+
+| Term / Symbol             | Meaning                                                             |
+| ------------------------- | ------------------------------------------------------------------- |
+| `cc.Node`                 | A general-purpose container for game objects in Cocos Creator       |
+| `@property`               | A decorator to expose a property to the Cocos Creator Editor        |
+| `Vec3`                    | A 3D vector class used to represent positions or directions         |
+| `getDelta()`              | Returns the change in position between two frames for the touch     |
+| `getBoundingBoxToWorld()` | Retrieves the bounding box of a node in the world coordinate system |
+| `intersects()`            | Checks if two bounding boxes overlap                                |
+| `onTouchStart`            | Called when the touch begins                                        |
+| `onTouchMove`             | Called continuously as the user drags the sprite                    |
+| `onTouchEnd`              | Called when the touch ends, checking if the sprite should align     |
+
+---
+
+## Summary
+
+This script allows a sprite to be dragged and dropped in Cocos Creator, with a reset feature if the mouse leaves the canvas. It checks whether the sprite is inside a target drop zone and aligns it to the center if so.
+
+---
+
 ![Static Badge](https://img.shields.io/badge/Aditya%20Kumar-black?style=for-the-badge&logo=atlasos&logoColor=%23ffffff)
