@@ -8,46 +8,34 @@
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class GameLogic extends cc.Component {
 
-    // Reference to the parent node (a panel) where instantiated prefabs will be added
     @property(cc.Node)
-    panel: cc.Node = null;
-
-    // Reference to the prefab to instantiate (boxSprite with a Label as its first child)
+    Panel: cc.Node = null;
     @property(cc.Prefab)
-    boxSprite: cc.Prefab = null;
-
-    // Counter used to assign a unique number to each instantiated box
-    counter: number = 0;
-
-    // LIFE-CYCLE CALLBACKS
-
-    // Called once when the script is first enabled
+    ssplash: cc.Prefab = null;
+    // LIFE-CYCLE CALLBACKS:
+    // onLoad () {}
     start() {
-        // Initialization logic can be added here if needed
     }
-
-    // Method to be called when a button is clicked
-    // It instantiates a new boxSprite prefab, adds it to the panel,
-    // and updates the label of the box with the current counter value
-    onClick() {
-        // Create a new instance of the prefab
-        let a = cc.instantiate(this.boxSprite);
-
-        // Set its parent to the panel so it appears in the UI
-        a.parent = this.panel;
-
-        // Get the first child of the prefab (assumed to be a node with a Label component)
-        let label = a.children[0];
-
-        // Update the label's string to the current counter value
+    counter: number = 1;
+    onclick() {
+        let a = cc.instantiate(this.ssplash);
+        a.parent = this.Panel; //jo prefab banega woh ki parent ka child hona chahiye toh jo a prefab hai uska parent panel hai
+        let label = a.children[0]; //jo a hai uske child ko access kar rahe
+        // this.node.getChildByName("sSplashLabel");
         label.getComponent(cc.Label).string = "" + this.counter++;
 
-        // Optional: If needed, you can use a.getChildByName("boxSpriteLabel") for more robust access
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+        const randomColor = new cc.Color(r, g, b);
+
+        const sprite = a.getComponent(cc.Sprite);
+        sprite.node.color = randomColor;
+
+        sprite.node.opacity = 255; // (0-256]
     }
 
-    // update (dt) {
-    //     // Called every frame, can be used for continuous updates
-    // }
+    // update (dt) {}
 }

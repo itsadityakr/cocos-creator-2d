@@ -5,24 +5,33 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class logic extends cc.Component {
 
-    @property(cc.Label)
-    label: cc.Label = null;
+    @property(cc.SpriteFrame)
+    image1: cc.SpriteFrame = null;
 
-    @property
-    text: string = 'hello';
+    @property(cc.SpriteFrame)
+    image2: cc.SpriteFrame = null;
 
-    // LIFE-CYCLE CALLBACKS:
+    @property(cc.Node)
+    imageFrame: cc.Node = null;
 
-    // onLoad () {}
+    isImage1Active: boolean = true;
 
-    start () {
-
+    start() {
+        this.imageFrame.getComponent(cc.Sprite).spriteFrame = this.image1;
     }
 
-    // update (dt) {}
+    onClick() {
+        const sprite = this.imageFrame.getComponent(cc.Sprite);
+        if (this.isImage1Active) {
+            sprite.spriteFrame = this.image2;
+        } else {
+            sprite.spriteFrame = this.image1;
+        }
+        this.isImage1Active = !this.isImage1Active;
+    }
 }

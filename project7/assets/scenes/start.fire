@@ -58,7 +58,7 @@
     "_groupIndex": 0,
     "groupIndex": 0,
     "autoReleaseAssets": false,
-    "_id": "7enkbWhWpMN6qJGi/+8t0c"
+    "_id": "ef42045e-0e05-4463-abad-cd28883e7b12"
   },
   {
     "__type__": "cc.Node",
@@ -715,7 +715,7 @@
     },
     "component": "",
     "_componentId": "92209vqwyRIBo/oYlRizxRh",
-    "handler": "onClick",
+    "handler": "onclick",
     "customEventData": ""
   },
   {
@@ -788,10 +788,10 @@
       "__id__": 15
     },
     "_enabled": true,
-    "panel": {
+    "Panel": {
       "__id__": 17
     },
-    "boxSprite": {
+    "ssplash": {
       "__uuid__": "e549f43d-ee1a-46be-89f9-3dab9318793f"
     },
     "_id": "a8CKpTwJpNG42bTco5DsjB"

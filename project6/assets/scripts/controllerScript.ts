@@ -5,24 +5,24 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class NewClass extends cc.Component {
 
-    @property(cc.Label)
-    label: cc.Label = null;
+    @property(cc.Node) bgRed: cc.Node = null;
+    @property(cc.Node) bgGreen: cc.Node = null;
 
-    @property
-    text: string = 'hello';
+    private isRedActive: boolean = true; // Track which color is active
 
-    // LIFE-CYCLE CALLBACKS:
-
-    // onLoad () {}
-
-    start () {
-
+    onLoad() {
+        this.bgRed.active = true;
+        this.bgGreen.active = false;
     }
 
-    // update (dt) {}
+    onClick() {
+        this.isRedActive = !this.isRedActive;
+        this.bgRed.active = this.isRedActive;
+        this.bgGreen.active = !this.isRedActive;
+    }
 }
