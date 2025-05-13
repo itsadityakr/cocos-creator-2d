@@ -615,15 +615,6 @@ Sure! Here's the in-depth explanation of the code's functionality:
 
 ---
 
-## Customization Ideas
-
-* Change `winningValue` to `512` for a full challenge.
-* Add a **"Game Over"** condition when no valid moves remain.
-* Add **animations** using `cc.tween()` for smoother transitions.
-* Add **mobile swipe controls** for better device support.
-
----
-
 ## Dependencies
 
 * **Cocos Creator 2.4.15**
