@@ -14,7 +14,7 @@ export default class InteractionManager extends cc.Component {
     }
 
     reloadBtn() {
-        cc.director.loadScene('game');
+        cc.director.loadScene('Game');
         FeedbackManager.instance.console("Reset Done !")
     }
 }

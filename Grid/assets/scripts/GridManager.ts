@@ -1,5 +1,3 @@
-// GridManager.ts
-
 const { ccclass, property } = cc._decorator;
 
 import PathManager from "./PathManager";
@@ -36,7 +34,12 @@ export default class GridManager extends cc.Component {
         this.prefabLabel.string = '';
         this.gameController = gameController;
         this.isLocked = false;
+
+        // Set directly on the node for easy access in PathManager
+        this.node["gridColumn"] = column;
+        this.node["gridRow"] = row;
     }
+
 
     setValue(value: number) {
         this.cellValue = value;
@@ -61,18 +64,31 @@ export default class GridManager extends cc.Component {
     }
 
     onMouseEnter(event: cc.Event.EventMouse) {
-        if (!this.isPointerInsideCanvas(event) || this.isLocked) return;
+    if (!this.isPointerInsideCanvas(event) || this.isLocked) return;
 
-        if (PathManager.isDrawing && PathManager.mouseHeld) {
-            const gm = this.node.getComponent(GridManager);
-            if (!PathManager.drawnPath.includes(this.node)) {
-                if (gm.cellValue === -1 || this.node === PathManager.drawnPath[0]) {
-                    PathManager.addNodeToPath(this.node);
-                    this.colorTile(PathManager.currentNumber);
-                }
+    if (PathManager.isDrawing && PathManager.mouseHeld) {
+        const lastNode = PathManager.drawnPath[PathManager.drawnPath.length - 1];
+        const lastGm = lastNode.getComponent(GridManager);
+
+        // Calculate difference between last node and current node
+        const rowDiff = Math.abs(this.row - lastGm.row);
+        const colDiff = Math.abs(this.column - lastGm.column);
+
+        // Allow only if move is horizontal or vertical (not diagonal)
+        if (!((rowDiff === 1 && colDiff === 0) || (rowDiff === 0 && colDiff === 1))) {
+            return; // Reject diagonal move
+        }
+
+        if (!PathManager.drawnPath.includes(this.node)) {
+            if (this.cellValue === -1 || this.node === PathManager.drawnPath[0]) {
+                PathManager.addNodeToPath(this.node);
+                this.colorTile(PathManager.currentNumber);
             }
         }
     }
+}
+
+
 
     onMouseUp(event: cc.Event.EventMouse) {
         if (!this.isPointerInsideCanvas(event)) return;
@@ -83,7 +99,7 @@ export default class GridManager extends cc.Component {
 
             if (gm && gm.cellValue === PathManager.currentNumber && this.node !== PathManager.drawnPath[0]) {
                 FeedbackManager.instance.console(`Correct pair matched: ${PathManager.currentNumber}`);
-                PathManager.lockPath(); 
+                PathManager.lockPath();
             } else if (gm && gm.cellValue !== -1 && gm.cellValue !== PathManager.currentNumber) {
                 FeedbackManager.instance.console(`Wrong Pairs Matched`);
             }
@@ -109,7 +125,7 @@ export default class GridManager extends cc.Component {
         if (this.cellValue === -1) {
             this.prefabBackground.color = cc.Color.WHITE;
         } else {
-            
+
             const color = this.gameController.getColorForNumber(this.cellValue);
             this.prefabBackground.color = color;
         }

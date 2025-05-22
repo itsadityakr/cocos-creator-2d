@@ -9,6 +9,8 @@ const { ccclass, property } = cc._decorator;
 @ccclass export default class GameManager extends cc.Component {
     static instance: GameManager = null;
 
+    
+
     @property(cc.Prefab)
     gridCellPrefab: cc.Prefab = null;
 
@@ -49,5 +51,19 @@ const { ccclass, property } = cc._decorator;
     getColorForNumber(value) {
         return ColorManager.instance.colorMap.get(value) || cc.Color.WHITE;
     }
+
+    isAllPairsMatched(): boolean {
+        for (let row = 0; row < this.gridSize; row++) {
+            for (let col = 0; col < this.gridSize; col++) {
+                const cell = this.gridMatrix[row][col];
+                if (cell.cellValue !== -1 && !cell.isLocked) {
+                    return false; // Numbered cell still unlocked
+                }
+            }
+        }
+        return true; // All numbered cells locked
+    }
+
+
 
 }

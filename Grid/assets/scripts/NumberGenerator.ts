@@ -9,7 +9,7 @@ export default class NumberGenerator extends cc.Component {
     static instance: NumberGenerator = null;
 
     gridStartNumber = 1;
-    gridEndNumber = 8;
+    gridEndNumber = 4;
     private occupied: boolean[][] = [];
 
     onLoad() {
