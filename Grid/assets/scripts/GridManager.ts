@@ -75,7 +75,7 @@ export default class GridManager extends cc.Component {
         const colDiff = Math.abs(this.column - lastGm.column);
 
         // Allow only if move is horizontal or vertical (not diagonal)
-        if (!((rowDiff === 1 && colDiff === 0) || (rowDiff === 0 && colDiff === 1))) 
+        if (!((rowDiff === 1 && colDiff === 0) || (rowDiff === 0 && colDiff === 1))) {
             return; // Reject diagonal move
         }
 
