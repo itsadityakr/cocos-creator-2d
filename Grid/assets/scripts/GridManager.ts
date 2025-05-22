@@ -1,3 +1,5 @@
+// GridManager.ts
+
 const { ccclass, property } = cc._decorator;
 
 import PathManager from "./PathManager";

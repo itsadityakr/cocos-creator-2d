@@ -1,3 +1,5 @@
+// NumberGenerator.ts
+
 import GameManager from "./GameManager";
 
 const { ccclass, property } = cc._decorator;
