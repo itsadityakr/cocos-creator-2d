@@ -73,6 +73,7 @@ export default class GridManager extends cc.Component {
         // Calculate difference between last node and current node
         const rowDiff = Math.abs(this.row - lastGm.row);
         const colDiff = Math.abs(this.column - lastGm.column);
+        //
 
         // Allow only if move is horizontal or vertical (not diagonal)
         if (!((rowDiff === 1 && colDiff === 0) || (rowDiff === 0 && colDiff === 1))) {
